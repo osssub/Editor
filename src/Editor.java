@@ -28,6 +28,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 
+
 public class Editor extends JFrame implements ActionListener, DocumentListener {
 
 	public static void main(String[] args) {
@@ -58,11 +59,12 @@ public class Editor extends JFrame implements ActionListener, DocumentListener {
 	private void buildMenu() {		
 		buildFileMenu();
 		buildEditMenu();
+		buildFontMenu();
 	}
 	
 	private void buildFileMenu() {
-		JMenu file = new JMenu("File");
-		file.setMnemonic('F');
+		JMenu file = new JMenu("New");
+		file.setMnemonic('n');
 		menu.add(file);
 		JMenuItem n = new JMenuItem("New");
 		n.setMnemonic('N');
@@ -89,6 +91,17 @@ public class Editor extends JFrame implements ActionListener, DocumentListener {
 		quit.setMnemonic('Q');
 		quit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK));
 	}
+	private void buildFontMenu() {
+
+		JMenu font = new JMenu("Format");
+		font.setMnemonic('F');
+		menu.add(font);
+		JMenuItem save = new JMenuItem("Font");
+		font.add(save);
+		save.setMnemonic('M');
+		save.addActionListener(this);
+		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.CTRL_DOWN_MASK));
+		}
 	
 	private void buildEditMenu() {		
 		JMenu edit = new JMenu("Edit");
@@ -160,6 +173,12 @@ public class Editor extends JFrame implements ActionListener, DocumentListener {
 			FindDialog find = new FindDialog(this, true);
 			find.showDialog();
 		}		
+		else if(action.equals("Font")) {			
+			setFamily();
+		}
+	
+	
+	
 	}
 	
 	private void newFile() {
@@ -169,6 +188,16 @@ public class Editor extends JFrame implements ActionListener, DocumentListener {
 		changed = false;
 		setTitle("Editor");
 	}
+
+	private void setFamily() {		
+
+		JSizeChooser js= new JSizeChooser();
+		js.show();
+		textPane.setFont(js.getFont());		
+	}
+
+	
+	
 	
 	private void loadFile() {
 		JFileChooser dialog = new JFileChooser(System.getProperty("user.home"));
